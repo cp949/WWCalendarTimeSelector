@@ -527,7 +527,7 @@ open class WWCalendarTimeSelector: UIViewController, UITableViewDelegate, UITabl
             optionBottomPanelBackgroundColor = UIColor.white
         }
     }
-
+    
     
     /// This is the month's offset when user is in selection of dates mode. A positive number will adjusts the month higher, while a negative number will adjust the month lower.
     ///
@@ -869,7 +869,7 @@ open class WWCalendarTimeSelector: UIViewController, UITableViewDelegate, UITabl
                     options: [UIViewAnimationOptions.allowAnimatedContent, UIViewAnimationOptions.allowUserInteraction],
                     animations: {
                         self.view.layoutIfNeeded()
-                    },
+                },
                     completion: nil
                 )
             } else {
@@ -947,7 +947,8 @@ open class WWCalendarTimeSelector: UIViewController, UITableViewDelegate, UITabl
         updateDate()
     }
     
-    @IBAction func showDate() {
+    // jjfive change to open
+    @IBAction open func showDate() {
         if optionStyles.showDateMonth {
             showDate(true)
         }
@@ -956,7 +957,8 @@ open class WWCalendarTimeSelector: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
-    @IBAction func showYear() {
+    // jjfive change to open
+    @IBAction open func showYear() {
         showYear(true)
     }
     
@@ -987,10 +989,13 @@ open class WWCalendarTimeSelector: UIViewController, UITableViewDelegate, UITabl
         case .range:
             del?.WWCalendarTimeSelectorDone?(picker, dates: optionCurrentDateRange.array)
         }
-        dismiss()
+        
+        // jjfive remove dismiss() call
+        //dismiss()
     }
     
-    fileprivate func dismiss() {
+    // jjfive change fileprivate to open
+    open func dismiss() {
         let picker = self
         let del = delegate
         del?.WWCalendarTimeSelectorWillDismiss?(picker)
@@ -1021,6 +1026,7 @@ open class WWCalendarTimeSelector: UIViewController, UITableViewDelegate, UITabl
         
         let animations = {
             self.calendarTable.alpha = 1
+            self.dateLabel.alpha = 1 // jjfive add
             self.monthsView.alpha = 0
             self.yearTable.alpha = 0
             self.clockView.alpha = 0
@@ -1038,7 +1044,12 @@ open class WWCalendarTimeSelector: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
-    fileprivate func showMonth(_ userTap: Bool, animated: Bool = true) {
+    // jjfive add
+    open func isCalendarVisible() -> Bool {
+        return self.calendarTable.alpha > 0.99
+    }
+    
+    func showMonth(_ userTap: Bool, animated: Bool = true) {
         changeSelMonth(animated: animated)
         
         if userTap {
@@ -1051,6 +1062,7 @@ open class WWCalendarTimeSelector: UIViewController, UITableViewDelegate, UITabl
         let animations = {
             self.calendarTable.alpha = 0
             self.monthsView.alpha = 1
+            self.dateLabel.alpha = 0 // jjfive add
             self.yearTable.alpha = 0
             self.clockView.alpha = 0
         }
@@ -1083,6 +1095,7 @@ open class WWCalendarTimeSelector: UIViewController, UITableViewDelegate, UITabl
             self.calendarTable.alpha = 0
             self.monthsView.alpha = 0
             self.yearTable.alpha = 1
+            self.dateLabel.alpha = 0 // jjfive add
             self.clockView.alpha = 0
         }
         if animated {
@@ -1126,7 +1139,7 @@ open class WWCalendarTimeSelector: UIViewController, UITableViewDelegate, UITabl
                 options: [UIViewAnimationOptions.transitionCrossDissolve],
                 animations: {
                     self.clockView.layer.displayIfNeeded()
-                },
+            },
                 completion: nil
             )
         } else {
@@ -1993,7 +2006,7 @@ open class WWCalendarTimeSelector: UIViewController, UITableViewDelegate, UITabl
             options: [UIViewAnimationOptions.transitionCrossDissolve, UIViewAnimationOptions.allowUserInteraction, UIViewAnimationOptions.beginFromCurrentState],
             animations: {
                 self.clockView.layer.displayIfNeeded()
-            },
+        },
             completion: nil
         )
     }
@@ -2236,7 +2249,7 @@ internal class WWCalendarRow: UIView {
                             options: [UIViewAnimationOptions.allowAnimatedContent, UIViewAnimationOptions.allowUserInteraction, UIViewAnimationOptions.beginFromCurrentState, UIViewAnimationOptions.curveEaseOut],
                             animations: {
                                 flashView.alpha = 0.75
-                            },
+                        },
                             completion: { _ in
                                 UIView.animate(
                                     withDuration: self.flashDuration / 2,
@@ -2244,12 +2257,12 @@ internal class WWCalendarRow: UIView {
                                     options: [UIViewAnimationOptions.allowAnimatedContent, UIViewAnimationOptions.allowUserInteraction, UIViewAnimationOptions.beginFromCurrentState, UIViewAnimationOptions.curveEaseIn],
                                     animations: {
                                         flashView.alpha = 0
-                                    },
+                                },
                                     completion: { _ in
                                         flashView.removeFromSuperview()
-                                    }
+                                }
                                 )
-                            }
+                        }
                         )
                         return true
                     }
@@ -2354,8 +2367,8 @@ internal class WWClock: UIView {
         }
         
         if showingHour {
-            let textAttr = [NSFontAttributeName: fontHour, NSForegroundColorAttributeName: fontColorHour, NSParagraphStyleAttributeName: paragraph]
-            let textAttrHighlight = [NSFontAttributeName: fontHourHighlight, NSForegroundColorAttributeName: fontColorHourHighlight, NSParagraphStyleAttributeName: paragraph]
+            let textAttr = [NSFontAttributeName: fontHour, NSForegroundColorAttributeName: fontColorHour, NSParagraphStyleAttributeName: paragraph] as [String : Any]
+            let textAttrHighlight = [NSFontAttributeName: fontHourHighlight, NSForegroundColorAttributeName: fontColorHourHighlight, NSParagraphStyleAttributeName: paragraph] as [String : Any]
             
             let templateSize = NSAttributedString(string: "12", attributes: textAttr).size()
             let templateSizeHighlight = NSAttributedString(string: "12", attributes: textAttrHighlight).size()
@@ -2419,8 +2432,8 @@ internal class WWClock: UIView {
             }
         }
         else {
-            let textAttr = [NSFontAttributeName: fontMinute, NSForegroundColorAttributeName: fontColorMinute, NSParagraphStyleAttributeName: paragraph]
-            let textAttrHighlight = [NSFontAttributeName: fontMinuteHighlight, NSForegroundColorAttributeName: fontColorMinuteHighlight, NSParagraphStyleAttributeName: paragraph]
+            let textAttr = [NSFontAttributeName: fontMinute, NSForegroundColorAttributeName: fontColorMinute, NSParagraphStyleAttributeName: paragraph] as [String : Any]
+            let textAttrHighlight = [NSFontAttributeName: fontMinuteHighlight, NSForegroundColorAttributeName: fontColorMinuteHighlight, NSParagraphStyleAttributeName: paragraph] as [String : Any]
             let templateSize = NSAttributedString(string: "60", attributes: textAttr).size()
             let templateSizeHighlight = NSAttributedString(string: "60", attributes: textAttrHighlight).size()
             let maxSize = max(templateSize.width, templateSize.height)
